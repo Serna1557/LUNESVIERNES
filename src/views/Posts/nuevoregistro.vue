@@ -6,7 +6,7 @@
       <label for="input-small">ID:</label>
     </b-col>
     <b-col sm="10">
-      <b-form-input id="id" name="id" v-model="post.id" size="sm" placeholder="id"></b-form-input>
+      <b-form-input id="id" name="id"  v-model="post.id" size="sm" placeholder="id"></b-form-input>
     </b-col>
   </b-row>
 
@@ -37,21 +37,22 @@
     </b-col>
   </b-row>
 
-  <b-button @click="aceptar()" size="sm" variant="success" class="mb-2 ">ACEPTAR
-    <b-icon icon="pencil-fill" aria-hidden="true"></b-icon> 
-    </b-button>
+<b-button @click="aceptar()" variant="success" class="mb-2">ACEPTAR
+<b-icon icon='pencil-fill' aria-hidden="true">ACEPTAR</b-icon>
+</b-button>
 
-    <b-button @click="salir()" size="sm" variant="success" class="mb-2 ">SALIR
-      <b-icon icon="pencil-fill" aria-hidden="true"></b-icon> 
-      </b-button>
-
+<b-button  @click="salir()" variant="primary" class="mb-2">SALIR
+<b-icon icon='pencil-fill' aria-hidden="true">SALIR</b-icon>
+</b-button>
+                
 </b-container>
 
     </div>
 </template>
+
 <script>
     import axios from 'axios'
-
+    
     export default{
         name: '',
         data() {
@@ -65,40 +66,31 @@
             }
             }
         },
-
+    
         component:{
-
+    
         },
-
+    
         computed:{
-
+    
         },
-
+    
         methods:{
-        aceptar(){
-        let variable=this.$route.params.id
-        axios.put("https://jsonplaceholder.typicode.com/posts/"+variable,this.post).then(data=>{
-        this.$route.push("/ListaPosts");
-        });
+          aceptar(){
+            axios.post('https://jsonplaceholder.typicode.com/posts/',this.post).then(data=>{
+            this.$router.push("/ListaPosts");
+          });
+        },
+          salir(){
+            this.$router.push("/ListaPosts");
+          },
+        },
+        
+    
+        mounted: function() {
+         
         },
 
-
-        salir(){
-          this.$router.push("/ListarPosts");
         }
-
-        },
-
-
-        mounted: function(){
-        let id=this.$route.params.id
-        axios.get("https://jsonplaceholder.typicode.com/posts/"+id).then(data=>{
-        this.post.id=data.data.id
-        this.post.title=data.data.title
-        this.post.body=data.data.body
-        this.post.userId=data.data.userId
-
-        });
-    },
-  }
+  
     </script>

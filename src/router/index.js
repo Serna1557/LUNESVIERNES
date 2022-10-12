@@ -7,18 +7,36 @@ import registrar from '../views/registrar.vue'
 import editar from '../views/editar.vue'
 import listarPosts from '../views/Posts/ListarPosts.vue'
 import EditarPosts from '../views/Posts/EditarPosts.vue'
+import nuevoregistro from '../views/Posts/nuevoregistro.vue'
+
+import login from '../views/Auth/login.vue'
+import register from '../views/Auth/register.vue'
+
 
 Vue.use(VueRouter)
 
 const routes = [
+
   {
     path: '/',
-    name: 'home',
-    component: HomeView
+    name: 'login',
+    component: login
   },
 
   {
-    path: '/EditarPosts',
+    path: '/register',
+    name: 'register',
+    component: register
+  },
+
+  {
+    path: '/nuevoregistro',
+    name: 'nuevoregistro',
+    component: nuevoregistro
+  },
+
+  {
+    path: '/EditarPosts/:id',
     name: 'EditarPosts',
     component: EditarPosts
   },

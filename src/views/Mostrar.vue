@@ -1,89 +1,92 @@
-
 <template>
     <div>
-        <div class="">
-            <b-button v-b-tooltip.hover title="Nuevo Registro" variant= "primary" @click="Nuevo()">
-            <b-icon icon="plus-lg" aria-hidden="true"></b-icon>Nuevo Registro
-            </b-button>
+            <div class="">
+                <b-button v-b-tooltip.hover title="Nuevo Registro" variant= "primary" @click="Nuevo()">
+         <b-icon icon="plus-lg" aria-hidden="true"></b-icon> Nuevo Registro
+         </b-button>
 
-        <table class="table">
-            <thead>
-                <tr>
-                <th>Id</th>
-                <th>Nombre</th>
-                <th>DNI</th>
-                <th>Telefono</th>
-                <th>Correo</th>
-                <th>ACCIONES</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr v-for="lista in listapacientes2" :key="lista.pacientes">
-                    <td>{{lista.PacienteId}}</td>
-                    <td>{{lista.Nombre}}</td>
-                    <td>{{lista.DNI}}</td>
-                    <td>{{lista.Telefono}}</td>
-                    <td>{{lista.Correo}}</td>
-                    <td>
-                        <b-button v-b-tooltip.hover title="Eliminar Registro" variant= "danger" @click="Eliminar(lista.PacienteId)">
-                        <b-icon icon="trash" aria-hidden="true"></b-icon>
-                        </b-button>
-                        <br>
-                        <br>
-                        <b-button v-b-tooltip.hover title="Editar Registro " variant= "success" @click="Editar(lista.PacienteId)">
-                        <b-icon icon="pencil-square" aria-hidden="true"></b-icon>
-                        </b-button>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+                <b-form-input :id="buscar" type="search" v-model="filter"></b-form-input>
+    <b-table :filter="filter" id="my-table" :items="Listapacientes" :fields="fields" class="my-table" :per-page="perPage"
+    :current-page="currentPage">
+    <template #cell(ACCION)="row">
+          <b-button   v-b-tooltip.hover title="Editar Registro" variant="success" @click="Editar(row.item.PacienteId)">
+          <b-icon icon="pencil-square" aria-hidden="true"></b-icon>
+          </b-button>
+          <b-button v-b-tooltip.hover title="Eliminar Registro" variant= "danger" @click="Eliminar()">
+          <b-icon icon="trash2-fill" aria-hidden="true"></b-icon>
+        </b-button>
+
+
+
+
+    </template>
+
+
+    </b-table>
+    <b-pagination
+      v-model="currentPage"
+      :total-rows="rows"
+      :per-page="perPage"
+      aria-controls="my-table"
+    ></b-pagination>
+
+            </div>
     </div>
-</div>
 </template>
 <script>
-
 import axios from 'axios';
-
-export default{
-    name:"ejercicio",
+export default {
+    name:"Dashboard",
     data(){
-        return{
-    listapacientes2:null
+        return {
+            fields:[
+            {key:'PacienteId', label:'PacienteId'},
+            {key:'Nombre', label:'Nombre'},
+            {key:'DNI', label:'DNI'},
+            {key:'Telefono', label:'Telefono'},
+            {key:'Correo', label:'Correo'},
+            "ACCION"
+
+            ],
+            currentPage: 10,
+            rows:10,
+            perPage:2,
+            Listapacientes:null,
+            fields:null,
         }
     },
-    componentes:{
-
+    components:{
     },
     methods:{
-
         Nuevo(){
-            this.$router.push('/registrar')
+        this.$router.push("/Registrar")
         },
-
-        Editar(Id){
-            this.$router.push('/editar/'+Id);
+        Editar(id){
+            this.$router.push('/Editar/'+id)
         },
-
-        Eliminar(Id){
-            if(confirm("desea eliminar el registro")){
-                let direccion=`https://api.solodata.es/pacientes/${Id}`;
-                axios.delete(direccion).then(data=>{
+        Eliminar(id){
+                if(confirm("¿Desea eliminar el registro?")){
+            let direccion=`https://api.solodata.es/pacientes/${id}`;
+                axios.delete(direccion).thesn(response=>{
+                }).catch(error=>{
+                    console.log(error);
                 })
+
+                }
+
             }
-        }
 
     },
     mounted:function(){
-      let direccion="https://api.solodata.es/pacientes?page=1";
-      axios.get(direccion).then(data=>{
-        this.listapacientes2=data.data;
-      })
+        let direccion = "https://api.solodata.es/pacientes2?page=1";
+        axios.get(direccion).then( data =>{
+            this.Listapacientes = data.data.pacientes
+        });
     }
 }
 </script>
-<style scoped>
+<style  scoped>
     .izquierda{
         text-align: left;
     }
-
 </style>
